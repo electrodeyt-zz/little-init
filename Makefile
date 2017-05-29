@@ -1,5 +1,5 @@
-make: little-init.c++
-	g++ --static -o init little-init.c++ -std=c++11
+make: little-init.cpp
+	g++ -o init little-init.cpp -std=c++11
 clean:
 	-rm init 2> /dev/null; true
 
