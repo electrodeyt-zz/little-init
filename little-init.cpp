@@ -2,7 +2,7 @@
    under MIT; Please compile staticly */
 
 ///TODO:
-///  "init rl" runlevel-switching
+///
 
 //Include stuff
 
@@ -28,7 +28,7 @@ using namespace std;
 // Declare Vars
 int done = 0; // is init procedure complete?
 int runlevel = 1; // runlevel, 0 should always be shutdown
-string version = "simple-init v0.3-git";
+string version = "little-init v0.3-git";
 string rc_script = "/etc/init.d/rc";
 // not the final solution, but its the best thing for now, there are more important things :)
 
@@ -86,9 +86,9 @@ void init() {
 
 
 // Call said functions
-int main() {
-	cout << version << endl;
+int main(int argc, char** argv) {
   if(getpid() == 1) {
+	  cout << version << endl;
     init();
     while(true) { // do stuff
       if(exist("/tmp/runlevel")) {
@@ -103,12 +103,22 @@ int main() {
           } else {
             tmp_runlevel = stoi(temp);
             call_rc(tmp_runlevel);
+            runlevel = tmp_runlevel;
           }
         }
         file.close();
       }
+      this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
   } else {
     // should be reserved for runlevel changes
+    if(argc == 1) {
+      cout << "Usage: init <runlevel>";
+    } else {
+      runlevel = atoi(argv[1]);
+      ofstream file("/tmp/runlevel");
+      file << runlevel;
+      file.close();
+    }
   }
 }

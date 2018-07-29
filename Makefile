@@ -7,5 +7,5 @@ install:
 	-@echo To install the init run "make install-init", the existing init will be renamed to init.bak
 
 install-init:
-	-sudo mv /sbin/init /sbin/init.bak
-	sudo cp init /sbin/init
+	-mv /sbin/init /sbin/init.bak
+	cp init /sbin/init
