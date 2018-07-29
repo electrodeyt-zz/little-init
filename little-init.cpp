@@ -27,7 +27,7 @@ using namespace std;
 
 // Declare Vars
 int done = 0; // is init procedure complete?
-int runlevel = 1; // runlevel, 0 should always be shutdown
+int runlevel = 5; // runlevel, 0 should always be shutdown, default is 5
 string version = "little-init v0.3-git";
 string rc_script = "/etc/init.d/rc";
 // not the final solution, but its the best thing for now, there are more important things :)
@@ -89,6 +89,12 @@ void init() {
 int main(int argc, char** argv) {
   if(getpid() == 1) {
 	  cout << version << endl;
+    if(argc != 1) {
+      runlevel = atoi(argv[1]);
+      if(string(argv[1]) == "s" || string(argv[1]) == "S") {
+        runlevel = 9;
+      }
+    }
     init();
     while(true) { // do stuff
       if(exist("/tmp/runlevel")) {
