@@ -2,7 +2,7 @@
    under MIT; Please compile staticly */
 
 ///TODO:
-/// runlevel-switching
+///  "init rl" runlevel-switching
 
 //Include stuff
 
@@ -50,6 +50,7 @@ void catch_sig() {
    	_sigact.sa_flags = SA_SIGINFO;
    	sigaction(SIGTERM, &_sigact, NULL);
    	sigaction(SIGHUP, &_sigact, NULL);
+    signal(SIGCHLD, SIG_IGN);
 }
 //END
 
@@ -69,7 +70,7 @@ inline bool exist(const std::string& name) {
 void init() {
   system("mount -a"); // just mount everything now
 	system("mount -o remount,rw /"); // remount root as rw, just in case its ro
-
+  call_rc(3);
 	done = 1;
 	runlevel = 3; // still have to implement switching it
 	if(exist("/etc/init.d/shell")) {
