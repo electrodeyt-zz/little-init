@@ -70,8 +70,9 @@ inline bool exist(const std::string& name) {
 void init() {
   system("mount -a"); // just mount everything now
 	system("mount -o remount,rw /"); // remount root as rw, just in case its ro
+  signal(SIGCHLD, SIG_IGN);
   call_rc(9); // call single user first
-  call_rc(2);
+  call_rc(runlevel);
 	done = 1;
 	runlevel = 3; // still have to implement switching it
 	if(exist("/etc/init.d/shell")) {
